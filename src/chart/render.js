@@ -128,8 +128,7 @@ function render(config) {
       .style('cursor', 'pointer')
       .style('fill', nameColor)
       .style('font-size', d => {
-        console.log(resizeFont(d.person.name))
-        return resizeFont(d.person.name)
+        return `${resizeFont(d.person.name)}px`
       })
       .text(d => d.person.name)
   // .on('click', onParentClick(config))

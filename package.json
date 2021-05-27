@@ -1,6 +1,6 @@
 {
   "name": "@nala-app/react-org-chart",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple, high-performance react component for d3 org chart",
   "main": "dist/index.js",
   "directories": {
