@@ -6,7 +6,7 @@ export const tree = {
     id: 100,
     avatar: avatarPersonnel,
     department: '',
-    name: 'Henry monger',
+    name: 'RICHARD ALEXANDER',
     title: 'Manager',
     totalReports: 3,
   },

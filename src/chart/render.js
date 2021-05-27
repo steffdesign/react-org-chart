@@ -4,6 +4,7 @@ const renderLines = require('./renderLines')
 const exportOrgChartImage = require('./exportOrgChartImage')
 const exportOrgChartPdf = require('./exportOrgChartPdf')
 const onClick = require('./onClick')
+const resizeFont = require('./resizeFont')
 const iconLink = require('./components/iconLink')
 const supervisorIcon = require('./components/supervisorIcon')
 const CHART_NODE_CLASS = 'org-chart-node'
@@ -126,7 +127,10 @@ function render(config) {
       .attr('dy', '.3em')
       .style('cursor', 'pointer')
       .style('fill', nameColor)
-      .style('font-size', 14)
+      .style('font-size', d => {
+        console.log(resizeFont(d.person.name))
+        return resizeFont(d.person.name)
+      })
       .text(d => d.person.name)
   // .on('click', onParentClick(config))
 
@@ -135,7 +139,7 @@ function render(config) {
       .append('text')
       .attr('class', PERSON_TITLE_CLASS + ' unedited')
       .attr('x', nodeWidth / 2)
-      .attr('y', namePos.y + nodePaddingY * 2.4)
+      .attr('y', (namePos.y + nodePaddingY * 2.4)+10)
       .attr('dy', '0.1em')
       .style('font-size', 12)
       .style('cursor', 'pointer')
