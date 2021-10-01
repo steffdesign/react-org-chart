@@ -176,7 +176,9 @@ function render(config) {
             d.person.hasImage = true
             return d.person.avatar
           })
-    })
+    }) 
+    .attr('crossorigin', 'anonymous')
+    .attr('referrer-policy', 'origin')
     .attr('src', d => d.person.avatar)
     .attr('href', d => d.person.avatar)
     .attr('clip-path', 'url(#avatarClip)')
