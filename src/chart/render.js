@@ -183,6 +183,8 @@ function render(config) {
               return d.person.avatar
             })
       })
+      .attr('crossorigin', 'anonymous')
+      .attr('referrer-policy', 'origin')
       .attr('src', d => d.person.avatar)
       .attr('href', d => d.person.avatar)
       .attr('clip-path', 'url(#avatarClip)')
