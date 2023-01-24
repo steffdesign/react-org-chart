@@ -10,11 +10,9 @@ function getTextForTitle(datum) {
   }
 
   const {
-    person: { totalReports },
+    person: { totalReports, label },
   } = datum
-  const pluralEnding = totalReports > 1 ? 's' : ''
-
-  return `${totalReports} supervisee${pluralEnding}`
+  return label ? `${totalReports} ${label}` : totalReports;
 }
 
 const departmentAbbrMap = {

@@ -5,13 +5,15 @@ export const tree = {
   person: {
     id: 100,
     avatar: avatarPersonnel,
-    department: '',
+    department: 'DEVELOPMENT',
     name: 'RICHARD ALEXANDER LOZADA VILCHEZ',
     title: 'FULL STACK DEVELOPER',
-    totalReports: 3,
+    totalReports: "3",
+    label: "colaboradores",
+    country: 'Argentina'
   },
   hasChild: true,
-  hasParent: true,
+  hasParent: false,
   children: [],
 }
 
@@ -21,10 +23,11 @@ export const tree1 = [
     person: {
       id: 36,
       avatar: avatarPersonnel,
-      department: '',
-      name: 'Tomasz polaski',
+      department: 'Development',
+      name: 'Tomasz polaski Mendoza Gonzalez',
       title: 'IT Specialist',
       totalReports: 4,
+      country: 'Chile'
     },
     hasChild: true,
     hasParent: true,
@@ -35,10 +38,11 @@ export const tree1 = [
     person: {
       id: 32,
       avatar: avatarPersonnel,
-      department: '',
+      department: 'Business Development',
       name: 'Emanuel walker',
-      title: 'IT Specialist',
+      title: 'Customer Success Director',
       totalReports: 0,
+      country: 'Colombia'
     },
     hasChild: true,
     hasParent: true,
@@ -53,6 +57,7 @@ export const tree1 = [
       name: 'Kerry peter',
       title: 'IT Specialist',
       totalReports: 3,
+      country: 'México'
     },
     hasChild: true,
     hasParent: true,
@@ -71,6 +76,7 @@ export const tree2 = [
       title: 'HR',
       totalReports: 2,
       link: 'https://github.com/unicef/react-org-chart',
+      country: 'Argentina'
     },
     hasChild: true,
     hasParent: true,
@@ -86,6 +92,7 @@ export const tree2 = [
       title: 'Developer',
       totalReports: 0,
       link: 'https://github.com/unicef/react-org-chart',
+      country: 'Argentina'
     },
     hasChild: true,
     hasParent: true,
@@ -101,6 +108,7 @@ export const tree2 = [
       title: 'Developer',
       totalReports: 0,
       link: 'https://github.com/unicef/react-org-chart',
+      country: 'Argentina'
     },
     hasChild: true,
     hasParent: true,
@@ -115,6 +123,7 @@ export const tree2 = [
       name: 'Ellen cott',
       title: 'IT Officer',
       totalReports: 0,
+      country: 'Argentina'
     },
     hasChild: false,
     hasParent: true,
@@ -132,6 +141,7 @@ export const tree3 = [
       name: 'Kenneth dom',
       title: 'IT Officer',
       totalReports: 0,
+      country: 'Argentina'
     },
     hasChild: false,
     hasParent: true,
@@ -146,6 +156,7 @@ export const tree3 = [
       name: 'Kin baker',
       title: 'IT Officer',
       totalReports: 0,
+      country: 'Argentina'
     },
     hasChild: false,
     hasParent: true,
@@ -163,6 +174,7 @@ export const tree4 = [
       name: 'Hendy kinger',
       title: 'Manager',
       totalReports: 0,
+      country: 'Argentina'
     },
     hasChild: true,
     hasParent: true,
@@ -177,6 +189,7 @@ export const tree4 = [
       name: 'Kate baker',
       title: 'IT Officer',
       totalReports: 0,
+      country: 'Argentina'
     },
     hasChild: false,
     hasParent: true,
@@ -191,6 +204,7 @@ export const tree4 = [
       name: 'John medis',
       title: 'IT Officer',
       totalReports: 0,
+      country: 'Argentina'
     },
     hasChild: false,
     hasParent: true,
@@ -206,6 +220,7 @@ export const tree4 = [
       name: 'Brett lee',
       title: 'IT Officer',
       totalReports: 0,
+      country: 'Argentina'
     },
     hasChild: false,
     hasParent: true,
