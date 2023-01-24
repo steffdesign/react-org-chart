@@ -3,7 +3,7 @@ const shouldResize = true
 
 // Nodes
 const nodeWidth = 140
-const nodeHeight = 180
+const nodeHeight = 200
 const nodeSpacing = 12
 const nodePaddingX = 16
 const nodePaddingY = 16
@@ -23,9 +23,9 @@ const lineDepthY = 120 /* Height of the line for child nodes */
 // Colors
 const backgroundColor = '#fff'
 const borderColor = '#c9c9c9'
-const nameColor = '#222d38'
-const titleColor = '#617080'
-const reportsColor = '#92A0AD'
+const nameColor = '#333333'
+const titleColor = '#333333'
+const reportsColor = '#191EB8'
 
 const config = {
   margin,

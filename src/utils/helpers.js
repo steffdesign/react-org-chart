@@ -1,6 +1,6 @@
 module.exports = {
   getTextForTitle,
-  getTextForDepartment,
+  getValidText,
   getCursorForNode,
 }
 
@@ -10,11 +10,9 @@ function getTextForTitle(datum) {
   }
 
   const {
-    person: { totalReports },
+    person: { totalReports, label },
   } = datum
-  const pluralEnding = totalReports > 1 ? 's' : ''
-
-  return `${totalReports} supervisee${pluralEnding}`
+  return label ? `${totalReports} ${label}` : totalReports;
 }
 
 const departmentAbbrMap = {
@@ -31,18 +29,12 @@ const departmentAbbrMap = {
   Sales: 'sales',
 }
 
-function getTextForDepartment(datum) {
-  if (!datum.person.department) {
-    return ''
+function getValidText(text) {
+  let textTransform = text;
+  if (text.length > 33) {
+    textTransform = text.substr(0, 33) + "...";
   }
-
-  const { department } = datum.person
-
-  if (departmentAbbrMap[department]) {
-    return departmentAbbrMap[department].toUpperCase()
-  }
-
-  return datum.person.department.substring(0, 3).toUpperCase()
+  return textTransform.toUpperCase();
 }
 
 function getCursorForNode(datum) {
