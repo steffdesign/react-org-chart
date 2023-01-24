@@ -6,11 +6,11 @@ export const tree = {
     id: 100,
     avatar: avatarPersonnel,
     department: 'DEVELOPMENT',
-    name: 'RICHARD ALEXANDER LOZADA VILCHEZ',
-    title: 'FULL STACK DEVELOPER',
+    name: 'Gloria Giovanna Lazzerini Bravo',
+    title: 'Office Manager - Comunicaciones Internas y Jefa de coordinación académica',
     totalReports: "3",
     label: "colaboradores",
-    country: 'Argentina'
+    country: 'República Dominicana'
   },
   hasChild: true,
   hasParent: false,

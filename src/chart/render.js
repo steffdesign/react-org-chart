@@ -128,7 +128,7 @@ function render(config) {
       .style('fill', nameColor)
       .style('font-size', 10)
       .style('font-weight', 700)
-      .text(d => d.person.name.toUpperCase())
+      .text(d => helpers.getValidText(d.person.name))
       .on('click', onClick(config, {location: 'card'}))
 
   // .on('click', onParentClick(config))
@@ -138,22 +138,22 @@ function render(config) {
       .append('text')
       .attr('class', PERSON_TITLE_CLASS + ' unedited')
       .attr('x', nodeWidth / 2)
-      .attr('y', (namePos.y + nodePaddingY * 2.2))
+      .attr('y', (namePos.y + nodePaddingY * 1.8))
       .attr('dy', '0.1em')
-      .style('font-size', 10)
+      .style('font-size', 9.5)
       .style('fill', titleColor)
-      .text(d => d.person.title && d.person.title.toUpperCase())
+      .text(d => d.person.title && helpers.getValidText(d.person.title))
 
   // Person's Department
   nodeEnter
     .append('text')
     .attr('class', PERSON_TITLE_CLASS + ' unedited')
     .attr('x', nodeWidth / 2)
-    .attr('y', (namePos.y + nodePaddingY * 2.4)+30)
+    .attr('y', (namePos.y + nodePaddingY * 2)+30)
     .attr('dy', '0.1em')
-    .style('font-size', 10)
+    .style('font-size', 9.5)
     .style('fill', titleColor)
-    .text(d => d.person.department && d.person.department.toUpperCase())
+    .text(d => d.person.department && helpers.getValidText(d.person.department))
 
   // Person's Country
   nodeEnter
@@ -162,7 +162,7 @@ function render(config) {
     .attr('x', nodeWidth / 2)
     .attr('y', (namePos.y + nodePaddingY * 2.4)+53)
     .attr('dy', '0.1em')
-    .style('font-size', 10)
+    .style('font-size', 9)
     .style('font-weight', 700)
     .style('fill', titleColor)
     .text(d => d.person.country && d.person.country.toUpperCase())
