@@ -1,8 +1,6 @@
 module.exports = covertImageToBase64
-const PROXY = 'https://cors-anywhere.herokuapp.com/' //FIXME: temporal solution
 
 function covertImageToBase64(src, callback, outputFormat) {
-  src = PROXY + src
   var img = new Image()
   img.crossOrigin = 'Anonymous'
   img.onload = function () {
