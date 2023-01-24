@@ -3,14 +3,25 @@ const { collapse } = require('../utils')
 
 module.exports = onClick
 
-function onClick(configOnClick) {
+/**
+ * OnClick
+ * @param configOnClick
+ * @param nodeClickEvent ({location: 'card'})
+ * @returns {(function(*=): (undefined|*))|*}
+ */
+function onClick(configOnClick, nodeClickEvent = null) {
   const { loadConfig } = configOnClick
 
   return datum => {
     if (d3.event.defaultPrevented) return
     const config = loadConfig()
-    const { loadChildren, render, onPersonClick } = config
+    const { loadChildren, render, onPersonClick, onClickNode } = config
     event.preventDefault()
+
+    if(nodeClickEvent && nodeClickEvent.location === 'card'){
+      onClickNode(datum);
+      return;
+    }
 
     if (onPersonClick) {
       const result = onPersonClick(datum, d3.event)
@@ -27,7 +38,7 @@ function onClick(configOnClick) {
     if (!datum.children && !datum._children && datum.hasChild) {
       if (!loadChildren) {
         console.error(
-          'react-org-chart.onClick: loadChildren() not found in config'
+            'react-org-chart.onClick: loadChildren() not found in config'
         )
         return
       }

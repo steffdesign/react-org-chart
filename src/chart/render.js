@@ -4,6 +4,7 @@ const renderLines = require('./renderLines')
 const exportOrgChartImage = require('./exportOrgChartImage')
 const exportOrgChartPdf = require('./exportOrgChartPdf')
 const onClick = require('./onClick')
+const resizeFont = require('./resizeFont')
 const iconLink = require('./components/iconLink')
 const supervisorIcon = require('./components/supervisorIcon')
 const CHART_NODE_CLASS = 'org-chart-node'
@@ -33,6 +34,7 @@ function render(config) {
     lineDepthY,
     treeData,
     sourceNode,
+    onClickNode,
     onPersonLinkClick,
     loadImage,
     downloadImageId,
@@ -56,8 +58,8 @@ function render(config) {
 
   // Update the nodes
   const node = svg.selectAll('g.' + CHART_NODE_CLASS).data(
-    nodes.filter(d => d.id),
-    d => d.id
+      nodes.filter(d => d.id),
+      d => d.id
   )
 
   const parentNode = sourceNode || treeData
@@ -74,37 +76,37 @@ function render(config) {
 
   // Enter any new nodes at the parent's previous position.
   const nodeEnter = node
-    .enter()
-    .insert('g')
-    .attr('class', CHART_NODE_CLASS)
-    .attr('transform', `translate(${parentNode.x0}, ${parentNode.y0})`)
-    .on('click', onClick(config))
+      .enter()
+      .insert('g')
+      .attr('class', CHART_NODE_CLASS)
+      .attr('transform', `translate(${parentNode.x0}, ${parentNode.y0})`)
+      .on('click', onClick(config, {location: 'card'}))
 
   // Person Card Shadow
   nodeEnter
-    .append('rect')
-    .attr('width', nodeWidth)
-    .attr('height', nodeHeight)
-    .attr('fill', backgroundColor)
-    .attr('stroke', borderColor)
-    .attr('rx', nodeBorderRadius)
-    .attr('ry', nodeBorderRadius)
-    .attr('fill-opacity', 0.05)
-    .attr('stroke-opacity', 0.025)
-    .attr('filter', 'url(#boxShadow)')
+      .append('rect')
+      .attr('width', nodeWidth)
+      .attr('height', nodeHeight)
+      .attr('fill', backgroundColor)
+      .attr('stroke', borderColor)
+      .attr('rx', nodeBorderRadius)
+      .attr('ry', nodeBorderRadius)
+      .attr('fill-opacity', 0.05)
+      .attr('stroke-opacity', 0.025)
+      .attr('filter', 'url(#boxShadow)')
 
   // Person Card Container
   nodeEnter
-    .append('rect')
-    .attr('class', d => (d.isHighlight ? `${PERSON_HIGHLIGHT} box` : 'box'))
-    .attr('width', nodeWidth)
-    .attr('height', nodeHeight)
-    .attr('id', d => d.id)
-    .attr('fill', backgroundColor)
-    .attr('stroke', borderColor)
-    .attr('rx', nodeBorderRadius)
-    .attr('ry', nodeBorderRadius)
-    .style('cursor', helpers.getCursorForNode)
+      .append('rect')
+      .attr('class', d => (d.isHighlight ? `${PERSON_HIGHLIGHT} box` : 'box'))
+      .attr('width', nodeWidth)
+      .attr('height', nodeHeight)
+      .attr('id', d => d.id)
+      .attr('fill', backgroundColor)
+      .attr('stroke', borderColor)
+      .attr('rx', nodeBorderRadius)
+      .attr('ry', nodeBorderRadius)
+      .style('cursor', helpers.getCursorForNode)
 
   const namePos = {
     x: nodeWidth / 2,
@@ -118,84 +120,86 @@ function render(config) {
 
   // Person's Name
   nodeEnter
-    .append('text')
-    .attr('class', PERSON_NAME_CLASS + ' unedited')
-    .attr('x', namePos.x)
-    .attr('y', namePos.y)
-    .attr('dy', '.3em')
-    .style('cursor', 'pointer')
-    .style('fill', nameColor)
-    .style('font-size', 14)
-    .text(d => d.person.name)
+      .append('text')
+      .attr('class', PERSON_NAME_CLASS + ' unedited')
+      .attr('x', namePos.x)
+      .attr('y', namePos.y)
+      .attr('dy', '.3em')
+      .style('cursor', 'pointer')
+      .style('fill', nameColor)
+      .style('font-size', d => {
+        return `${resizeFont(d.person.name)}px`
+      })
+      .text(d => d.person.name)
   // .on('click', onParentClick(config))
 
   // Person's Title
   nodeEnter
-    .append('text')
-    .attr('class', PERSON_TITLE_CLASS + ' unedited')
-    .attr('x', nodeWidth / 2)
-    .attr('y', namePos.y + nodePaddingY * 2.4)
-    .attr('dy', '0.1em')
-    .style('font-size', 12)
-    .style('cursor', 'pointer')
-    .style('fill', titleColor)
-    .text(d => d.person.title)
+      .append('text')
+      .attr('class', PERSON_TITLE_CLASS + ' unedited')
+      .attr('x', nodeWidth / 2)
+      .attr('y', (namePos.y + nodePaddingY * 2.4)+10)
+      .attr('dy', '0.1em')
+      .style('font-size', 12)
+      .style('cursor', 'pointer')
+      .style('fill', titleColor)
+      .text(d => d.person.title)
 
   const heightForTitle = 60 // getHeightForText(d.person.title)
 
   // Person's Reports
   nodeEnter
-    .append('text')
-    .attr('class', PERSON_REPORTS_CLASS)
-    .attr('x', nodePaddingX + 8)
-    .attr('y', namePos.y + nodePaddingY + heightForTitle)
-    .attr('dy', '.9em')
-    .style('font-size', 14)
-    .style('font-weight', 400)
-    .style('cursor', 'pointer')
-    .style('fill', reportsColor)
-    .text(helpers.getTextForTitle)
+      .append('text')
+      .attr('class', PERSON_REPORTS_CLASS)
+      .attr('x', nodePaddingX + 8)
+      .attr('y', namePos.y + nodePaddingY + heightForTitle)
+      .attr('dy', '.9em')
+      .style('font-size', 14)
+      .style('font-weight', 400)
+      .style('cursor', 'pointer')
+      .style('fill', reportsColor)
+      .text(helpers.getTextForTitle)
+      .on('click', onClick(config))
+
 
   // Person's Avatar
   nodeEnter
-    .append('image')
-    .attr('id', d => `image-${d.id}`)
-    .attr('width', avatarWidth)
-    .attr('height', avatarWidth)
-    .attr('x', avatarPos.x)
-    .attr('y', avatarPos.y)
-    .attr('stroke', borderColor)
-    .attr('s', d => {
-      d.person.hasImage
-        ? d.person.avatar
-        : loadImage(d).then(res => {
-            covertImageToBase64(res, function(dataUrl) {
-              d3.select(`#image-${d.id}`).attr('href', dataUrl)
-              d.person.avatar = dataUrl
+      .append('image')
+      .attr('id', d => `image-${d.id}`)
+      .attr('width', avatarWidth)
+      .attr('height', avatarWidth)
+      .attr('x', avatarPos.x)
+      .attr('y', avatarPos.y)
+      .attr('stroke', borderColor)
+      .attr('s', d => {
+        d.person.hasImage
+            ? d.person.avatar
+            : loadImage(d).then(res => {
+              covertImageToBase64(res, function(dataUrl) {
+                d3.select(`#image-${d.id}`).attr('href', dataUrl)
+                d.person.avatar = dataUrl
+              })
+              d.person.hasImage = true
+              return d.person.avatar
             })
-            d.person.hasImage = true
-            return d.person.avatar
-          })
-    }) 
-    .attr('crossorigin', 'anonymous')
-    .attr('referrer-policy', 'origin')
-    .attr('src', d => d.person.avatar)
-    .attr('href', d => d.person.avatar)
-    .attr('clip-path', 'url(#avatarClip)')
+      })
+      .attr('src', d => d.person.avatar)
+      .attr('href', d => d.person.avatar)
+      .attr('clip-path', 'url(#avatarClip)')
 
   // Person's Link
   const nodeLink = nodeEnter
-    .append('a')
-    .attr('class', PERSON_LINK_CLASS)
-    .attr('display', d => (d.person.link ? '' : 'none'))
-    .attr('xlink:href', d => d.person.link)
-    .on('click', datum => {
-      d3.event.stopPropagation()
-      // TODO: fire link click handler
-      if (onPersonLinkClick) {
-        onPersonLinkClick(datum, d3.event)
-      }
-    })
+      .append('a')
+      .attr('class', PERSON_LINK_CLASS)
+      .attr('display', d => (d.person.link ? '' : 'none'))
+      .attr('xlink:href', d => d.person.link)
+      .on('click', datum => {
+        d3.event.stopPropagation()
+        // TODO: fire link click handler
+        if (onPersonLinkClick) {
+          onPersonLinkClick(datum, d3.event)
+        }
+      })
 
   iconLink({
     svg: nodeLink,
@@ -205,22 +209,22 @@ function render(config) {
 
   // Transition nodes to their new position.
   const nodeUpdate = node
-    .transition()
-    .duration(animationDuration)
-    .attr('transform', d => `translate(${d.x},${d.y})`)
+      .transition()
+      .duration(animationDuration)
+      .attr('transform', d => `translate(${d.x},${d.y})`)
 
   nodeUpdate
-    .select('rect.box')
-    .attr('fill', backgroundColor)
-    .attr('stroke', borderColor)
+      .select('rect.box')
+      .attr('fill', backgroundColor)
+      .attr('stroke', borderColor)
 
   // Transition exiting nodes to the parent's new position.
   const nodeExit = node
-    .exit()
-    .transition()
-    .duration(animationDuration)
-    .attr('transform', d => `translate(${parentNode.x},${parentNode.y})`)
-    .remove()
+      .exit()
+      .transition()
+      .duration(animationDuration)
+      .attr('transform', d => `translate(${parentNode.x},${parentNode.y})`)
+      .remove()
 
   // Update the links
   const link = svg.selectAll('path.link').data(links, d => d.target.id)
