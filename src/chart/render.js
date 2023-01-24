@@ -80,7 +80,6 @@ function render(config) {
       .insert('g')
       .attr('class', CHART_NODE_CLASS)
       .attr('transform', `translate(${parentNode.x0}, ${parentNode.y0})`)
-      .on('click', onClick(config, {location: 'card'}))
 
   // Person Card Shadow
   nodeEnter
@@ -127,10 +126,11 @@ function render(config) {
       .attr('dy', '.3em')
       .style('cursor', 'pointer')
       .style('fill', nameColor)
-      .style('font-size', d => {
-        return `${resizeFont(d.person.name)}px`
-      })
-      .text(d => d.person.name)
+      .style('font-size', 10)
+      .style('font-weight', 700)
+      .text(d => helpers.getValidText(d.person.name))
+      .on('click', onClick(config, {location: 'card'}))
+
   // .on('click', onParentClick(config))
 
   // Person's Title
@@ -138,28 +138,74 @@ function render(config) {
       .append('text')
       .attr('class', PERSON_TITLE_CLASS + ' unedited')
       .attr('x', nodeWidth / 2)
-      .attr('y', (namePos.y + nodePaddingY * 2.4)+10)
+      .attr('y', (namePos.y + nodePaddingY * 1.8))
       .attr('dy', '0.1em')
-      .style('font-size', 12)
-      .style('cursor', 'pointer')
+      .style('font-size', 9.5)
       .style('fill', titleColor)
-      .text(d => d.person.title)
+      .text(d => d.person.title && helpers.getValidText(d.person.title))
 
-  const heightForTitle = 60 // getHeightForText(d.person.title)
+  // Person's Department
+  nodeEnter
+    .append('text')
+    .attr('class', PERSON_TITLE_CLASS + ' unedited')
+    .attr('x', nodeWidth / 2)
+    .attr('y', (namePos.y + nodePaddingY * 2)+30)
+    .attr('dy', '0.1em')
+    .style('font-size', 9.5)
+    .style('fill', titleColor)
+    .text(d => d.person.department && helpers.getValidText(d.person.department))
+
+  // Person's Country
+  nodeEnter
+    .append('text')
+    .attr('class', PERSON_TITLE_CLASS + ' unedited')
+    .attr('x', nodeWidth / 2)
+    .attr('y', (namePos.y + nodePaddingY * 2.4)+53)
+    .attr('dy', '0.1em')
+    .style('font-size', 9)
+    .style('font-weight', 700)
+    .style('fill', titleColor)
+    .text(d => d.person.country && d.person.country.toUpperCase())
 
   // Person's Reports
   nodeEnter
-      .append('text')
-      .attr('class', PERSON_REPORTS_CLASS)
-      .attr('x', nodePaddingX + 8)
-      .attr('y', namePos.y + nodePaddingY + heightForTitle)
-      .attr('dy', '.9em')
-      .style('font-size', 14)
-      .style('font-weight', 400)
-      .style('cursor', 'pointer')
-      .style('fill', reportsColor)
-      .text(helpers.getTextForTitle)
-      .on('click', onClick(config))
+    .append('text')
+    .attr('class', PERSON_REPORTS_CLASS)
+    .attr('x', nodeWidth / 2)
+    .attr('y', (namePos.y + nodePaddingY * 2.4)+65)
+    .attr('dy', '.9em')
+    .style('font-size', 10)
+    .style('font-weight', 700)
+    .style('cursor', 'pointer')
+    .style('fill', reportsColor)
+    .text(d => {
+      const { totalReports, label } = d.person;
+      let reportText = "";
+      if (totalReports && totalReports > 0) {
+        if (label) {
+          reportText = `${totalReports} ${label}`;
+        } else {
+          reportText = totalReports;
+        }
+      }
+      return reportText;
+    })
+    .on('click', onClick(config))
+
+  // TODO: Add reports background
+  // const text = d3.select(".org-chart-person-reports")
+
+  // const rect = d3.select("svg").append("rect")
+  //   .attr("x", parseFloat(text.attr("x")) / 2.6)
+  //   .attr("y", parseFloat(text.attr("y")) - 3)
+  //   .attr('dy', '.9em')
+  //   .attr("width", text.node().getBBox().width + 12)
+  //   .attr("height", text.node().getBBox().height + 8)
+  //   .attr('rx', 10)
+  //   .attr('ry', 10)
+  //   .style("fill", "#F0F0F7");
+
+  // text.node().parentNode.insertBefore(rect.node(), text.node());
 
 
   // Person's Avatar
@@ -186,6 +232,8 @@ function render(config) {
       .attr('src', d => d.person.avatar)
       .attr('href', d => d.person.avatar)
       .attr('clip-path', 'url(#avatarClip)')
+      .style('cursor', 'pointer')
+      .on('click', onClick(config, {location: 'card'}))
 
   // Person's Link
   const nodeLink = nodeEnter
@@ -233,6 +281,7 @@ function render(config) {
   const wrapWidth = 124
   svg.selectAll('text.unedited.' + PERSON_NAME_CLASS).call(wrapText, wrapWidth)
   svg.selectAll('text.unedited.' + PERSON_TITLE_CLASS).call(wrapText, wrapWidth)
+  svg.selectAll('text.' + PERSON_REPORTS_CLASS).call(wrapText, wrapWidth)
 
   // Render lines connecting nodes
   renderLines(config)
