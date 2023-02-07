@@ -40,4 +40,9 @@ module.exports = {
       root: '_',
     },
   },
+  performance: {
+    hints: 'warning',
+    maxAssetSize: 500 * 1024,
+    maxEntrypointSize: 500 * 1024
+  }
 }

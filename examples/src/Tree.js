@@ -5,7 +5,7 @@ export const tree = {
   person: {
     id: 100,
     avatar: avatarPersonnel,
-    department: 'DEVELOPMENT',
+    department: 'CUSTOMER SUCCESS MANAGER',
     name: 'Gloria Giovanna Lazzerini Bravo',
     title: 'Office Manager - Comunicaciones Internas y Jefa de coordinación académica',
     totalReports: "3",
